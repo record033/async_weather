@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
 
-function App() {
+const App = () => {
+  const getGeoWeather = () => {
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      const apiKey = "f6454c108a59e53bfb5611065f5cc6e9";
+      console.log(position);
+      const { latitude, longitude } = position.coords;
+      const response = await fetch(
+        "http://api.weatherstack.com/current?access_key=" +
+          apiKey +
+          "&query=" +
+          latitude +
+          "," +
+          longitude
+      );
+      console.log(response);
+      const CurrentWeather = await response.json();
+      console.log(CurrentWeather);
+    });
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>async_weather</h1>
+      <button onClick={getGeoWeather}>test</button>
     </div>
   );
-}
+};
 
 export default App;

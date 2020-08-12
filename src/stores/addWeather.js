@@ -3,7 +3,16 @@ export const actions = {
   UPDATE_WEATHER_DATA: "UPDATE_WEATHER_DATA",
 };
 
+const initialState = {
+  weatherData: "Unknown..",
+  weatherRecieved: false,
+};
+
 export const WeatherReducer = (state, action) => {
+  if (typeof state === "undefined") {
+    return initialState;
+  }
+
   switch (action.type) {
     case "ADD_WEATHER_DATA":
       return { ...state, weatherData: action.payload, weatherRecieved: true };

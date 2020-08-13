@@ -31,7 +31,7 @@ export const WeatherCard = () => {
 
       weatherDispatch({
         type: "ADD_WEATHER_DATA",
-        isLoading: true,
+        isLoading: false,
         payload: {
           time: rawWeatherData.current.observation_time,
           temperature: rawWeatherData.current.temperature,

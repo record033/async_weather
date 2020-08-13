@@ -4,7 +4,7 @@ export const actions = {
 };
 
 const initialState = {
-  weatherData: "Unknown..",
+  weatherData: null,
   weatherRecieved: false,
 };
 

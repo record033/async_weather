@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 export const WeatherCard = () => {
   const weatherDispatch = useDispatch();
-  const weatherSelector = useSelector((state) => state);
-  console.log(weatherSelector);
+  const weather = useSelector((state) => state);
 
   const getWeather = async () => {
     const apiKey = "f6454c108a59e53bfb5611065f5cc6e9";
@@ -21,23 +20,40 @@ export const WeatherCard = () => {
           position.coords.longitude
       );
       console.log(response);
-      const currentWeather = await response.json();
-      console.log(currentWeather);
-      weatherDispatch({ type: "ADD_WEATHER_DATA", payload: currentWeather });
+
+      const rawWeatherData = await response.json();
+      console.log(rawWeatherData);
+
+      weatherDispatch({
+        type: "ADD_WEATHER_DATA",
+        payload: {
+          time: rawWeatherData.current.observation_time,
+          temperature: rawWeatherData.current.temperature,
+          humidity: rawWeatherData.current.humidity,
+          isDay: rawWeatherData.current.is_day,
+          description: rawWeatherData.current.weather_descriptions,
+          iconSrc: rawWeatherData.current.weather_icons,
+          wind: {
+            dir: rawWeatherData.current.wind_dir,
+            speed: rawWeatherData.current.wind_speed,
+          },
+        },
+      });
     } catch (error) {
       console.log("error", error);
     }
   };
+  console.log(weather);
   return (
     <>
       <h1>async_weather</h1>
       <button onClick={getWeather}>log and dispatch</button>
       <div>
-        {weatherSelector.weatherRecieved
+        {weather.weatherRecieved
           ? "Weather data: \n Time is " +
-            weatherSelector.weatherData.current.observation_time +
+            weather.weatherData.time +
             "\n Temperature is " +
-            weatherSelector.weatherData.current.temperature +
+            weather.weatherData.temperature +
             "\n "
           : "click to get data"}
       </div>

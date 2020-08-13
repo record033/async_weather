@@ -19,7 +19,7 @@ export const WeatherReducer = (state, action) => {
       return { ...state, weatherData: action.payload, weatherRecieved: true };
 
     case "SET_LOADING_TRUE":
-      return { ...state, weatherData: action.payload, isLoading: true };
+      return { ...state, weatherData: null, isLoading: true };
 
     default:
       break;

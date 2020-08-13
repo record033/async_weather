@@ -10,7 +10,7 @@ export const WeatherCard = () => {
   const getWeather = async () => {
     weatherDispatch({
       type: "SET_LOADING_TRUE",
-      weatherRecieved: false,
+      payload: false,
     });
     const apiKey = "f6454c108a59e53bfb5611065f5cc6e9";
     try {

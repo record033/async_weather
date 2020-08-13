@@ -28,8 +28,7 @@ export const WeatherCard = () => {
       );
 
       const rawWeatherData = await response.json();
-      const { current } = rawWeatherData;
-      weatherDispatch(actionHandler(current));
+      weatherDispatch(actionHandler(rawWeatherData));
     } catch (error) {
       console.log("error", error);
     }

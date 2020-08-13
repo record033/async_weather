@@ -38,7 +38,7 @@ export const WeatherCard = () => {
       <h1>Weather</h1>
       <button onClick={getWeather}>click me</button>
       <WeatherCardWrapper>
-        {weather.weatherData === null && weather.isLoading === false ? (
+        {weather.weatherData === null && !weather.isLoading  ? (
           <p>click to load data </p>
         ) : weather.isLoading && weather.weatherData === null ? (
           <Spinner />

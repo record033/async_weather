@@ -1,11 +1,10 @@
 export const actions = {
-  ADD_WEATHER_DATA: "ADD_WEATHER_DATA",
-  SET_LOADING_TRUE: "SET_LOADING_TRUE",
+  WEATHER_ADD_DATA: "WEATHER_ADD_DATA",
+  WEATHER_TRIGGER_LOADING: "WEATHER_TRIGGER_LOADING",
 };
 
 const initialState = {
   weatherData: null,
-  weatherRecieved: false,
   isLoading: false,
 };
 
@@ -15,10 +14,10 @@ export const WeatherReducer = (state, action) => {
   }
 
   switch (action.type) {
-    case "ADD_WEATHER_DATA":
-      return { ...state, weatherData: action.payload, weatherRecieved: true };
+    case "WEATHER_ADD_DATA":
+      return { ...state, weatherData: action.payload };
 
-    case "SET_LOADING_TRUE":
+    case "WEATHER_TRIGGER_LOADING":
       return { ...state, weatherData: null, isLoading: true };
 
     default:

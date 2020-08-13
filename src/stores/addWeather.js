@@ -1,11 +1,12 @@
 export const actions = {
   ADD_WEATHER_DATA: "ADD_WEATHER_DATA",
-  UPDATE_WEATHER_DATA: "UPDATE_WEATHER_DATA",
+  SET_LOADING_TRUE: "SET_LOADING_TRUE",
 };
 
 const initialState = {
   weatherData: null,
   weatherRecieved: false,
+  isLoading: false,
 };
 
 export const WeatherReducer = (state, action) => {
@@ -17,8 +18,8 @@ export const WeatherReducer = (state, action) => {
     case "ADD_WEATHER_DATA":
       return { ...state, weatherData: action.payload, weatherRecieved: true };
 
-    case "UPDATE_WEATHER_DATA":
-      return { ...state, weatherData: action.payload, weatherRecieved: true };
+    case "SET_LOADING_TRUE":
+      return { ...state, weatherData: action.payload, isLoading: true };
 
     default:
       break;

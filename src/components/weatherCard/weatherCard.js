@@ -4,12 +4,12 @@ import { apiKey } from "../../config";
 //
 import { getPosition } from "../../helpers/getPosition";
 import { actionHandler } from "../../helpers/actionHandler";
+import { WeatherCardWrapper } from "./styles";
 // Bootstrap
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Card } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import Collapse from "react-bootstrap/Collapse";
-import Button from "react-bootstrap/Button";
 
 export const WeatherCard = () => {
   const weatherDispatch = useDispatch();
@@ -17,7 +17,7 @@ export const WeatherCard = () => {
   const [open, setOpen] = useState(false);
 
   const triggerCollapse = () => {
-    setOpen(!open);
+    setOpen(true);
   };
 
   const getWeather = async () => {
@@ -47,36 +47,46 @@ export const WeatherCard = () => {
 
   return (
     <>
-      <h1>Weather</h1>
-      <Button
-        variant="info"
-        onClick={() => {
-          getWeather();
-          triggerCollapse();
-        }}
-      >
-        click me
-      </Button>
-      <Card bg="info" border="dark" text="light" style={{ width: "35vw" }}>
-        <div style={{ maxWidth: "300px" }}>
-          {weather.weatherData === null ? <p>Click to get weather</p> : null}
-          <Collapse in={open}>
-            {weather.weatherData === null && !weather.isLoading ? (
-              <div> </div>
-            ) : weather.isLoading && weather.weatherData === null ? (
-              <div>
-                <Spinner animation="border" role="status" />
-              </div>
-            ) : (
-              <div>
-                <p>Time is {weather.weatherData.time}</p>
-                <p>Temp is {weather.weatherData.temperature} deg</p>
-                <div src={weather.weatherData.iconSrc} />
-              </div>
-            )}
-          </Collapse>
-        </div>
-      </Card>
+      <WeatherCardWrapper>
+        <Card
+          bg="info"
+          border="dark"
+          text="light"
+          style={{ width: "30vw" }}
+          onClick={() => {
+            getWeather();
+            triggerCollapse();
+          }}
+        >
+          <div style={{ maxWidth: "500px" }}>
+            {weather.weatherData === null ? <p>Click to get weather</p> : null}
+            <Collapse in={open}>
+              {weather.weatherData === null && !weather.isLoading ? (
+                <div> </div>
+              ) : weather.isLoading && weather.weatherData === null ? (
+                <div>
+                  <Spinner animation="border" role="status" />
+                </div>
+              ) : (
+                <div>
+                  <p>Time is {weather.weatherData.time}</p>
+                  <p>Temp is {weather.weatherData.temperature} deg</p>
+                  <p>Humidity is {weather.weatherData.humidity}</p>
+                  <p>
+                    Now it is{" "}
+                    {weather.weatherData.isDay === "yes" ? "daytime" : "night"}{" "}
+                    and weather is {weather.weatherData.description}
+                  </p>
+                  <p>
+                    Wind goes {weather.weatherData.wind.dir} with power of{" "}
+                    {weather.weatherData.wind.speed}
+                  </p>
+                </div>
+              )}
+            </Collapse>
+          </div>
+        </Card>
+      </WeatherCardWrapper>
     </>
   );
 };

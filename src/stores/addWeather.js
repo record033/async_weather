@@ -15,7 +15,7 @@ export const WeatherReducer = (state, action) => {
 
   switch (action.type) {
     case "WEATHER_ADD_DATA":
-      return { ...state, weatherData: action.payload };
+      return { ...state, weatherData: action.payload, isLoading: false };
 
     case "WEATHER_TRIGGER_LOADING":
       return { ...state, weatherData: null, isLoading: true };

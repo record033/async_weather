@@ -16,41 +16,37 @@ export const WeatherCard = () => {
   const { isLoading, weatherData } = useSelector((state) => state);
   const [open, setOpen] = useState(false);
 
-  const openCallback = useCallback(() => {
+  const handleOpen = useCallback(() => {
     setOpen(true);
   }, []);
 
-  const getWeatherCallback = useCallback(() => {
-    const getWeather = async () => {
-      weatherDispatch({
-        type: "WEATHER_TRIGGER_LOADING",
-        payload: false,
-      });
+  const handleRequestWeather = useCallback(async () => {
+    weatherDispatch({
+      type: "WEATHER_TRIGGER_LOADING",
+      payload: false,
+    });
 
-      try {
-        console.log("Start getting data..");
-        const position = await getPosition();
-        const response = await fetch(
-          "http://api.weatherstack.com/current?access_key=" +
-            apiKey +
-            "&query=" +
-            position.coords.latitude +
-            "," +
-            position.coords.longitude
-        );
-        const rawWeatherData = await response.json();
-        weatherDispatch(actionHandler(rawWeatherData));
-      } catch (error) {
-        console.error("error", error);
-      }
-    };
-    getWeather();
+    try {
+      const position = await getPosition();
+      const response = await fetch(
+        "http://api.weatherstack.com/current?access_key=" +
+          apiKey +
+          "&query=" +
+          position.coords.latitude +
+          "," +
+          position.coords.longitude
+      );
+      const rawWeatherData = await response.json();
+      weatherDispatch(actionHandler(rawWeatherData));
+    } catch (error) {
+      console.error("error", error);
+    }
   }, [weatherDispatch]);
 
-  const cardCallback = useCallback(() => {
-    getWeatherCallback();
-    openCallback();
-  }, [getWeatherCallback, openCallback]);
+  const handleCardClick = useCallback(() => {
+    handleRequestWeather();
+    handleOpen();
+  }, [handleRequestWeather, handleOpen]);
 
   return (
     <>
@@ -60,7 +56,7 @@ export const WeatherCard = () => {
           border="dark"
           text="light"
           style={{ width: "30vw" }}
-          onClick={cardCallback}
+          onClick={handleCardClick}
         >
           <div style={{ maxWidth: "500px" }}>
             {weatherData === null ? <p>Click to get weather</p> : null}

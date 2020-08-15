@@ -1,5 +1,4 @@
-export const actionHandler = (data) => {
-  const { current } = data;
+export const actionHandler = ({ current }) => {
   return {
     type: "WEATHER_ADD_DATA",
     payload: {

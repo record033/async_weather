@@ -1,10 +1,10 @@
 import React from "react";
-import { weatherStore } from "./stores/weatherStore";
-import { WeatherCard } from "./components/weatherCard/weatherCard";
 import { NavBar } from "./components/navbar/navbar";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { routes } from "./config";
+import { weatherStore } from "./stores/weatherStore";
+import { WeatherCard } from "./components/weatherCard/weatherCard";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 

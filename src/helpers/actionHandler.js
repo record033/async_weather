@@ -5,7 +5,7 @@ export const actionHandler = ({ current }) => {
       time: current.observation_time,
       temperature: current.temperature,
       humidity: current.humidity,
-      isDay: current.is_day === "yes" ? true : false,
+      isDay: current.is_day === "yes",
       description: current.weather_descriptions,
       iconSrc: current.weather_icons,
       wind: {

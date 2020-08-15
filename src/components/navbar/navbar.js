@@ -4,8 +4,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import { NavLinksWrapper } from "./styles";
 
-export const NavBar = () => {
-  return (
+export const NavBar = () =>(
     <Navbar bg="primary" variant="dark">
       <Container>
         <Navbar.Brand>Weather</Navbar.Brand>
@@ -20,4 +19,3 @@ export const NavBar = () => {
       </Container>
     </Navbar>
   );
-};

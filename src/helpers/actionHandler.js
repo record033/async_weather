@@ -1,5 +1,4 @@
 export const actionHandler = ({ current }) => {
-  console.log(current);
   return {
     type: "WEATHER_ADD_DATA",
     payload: {

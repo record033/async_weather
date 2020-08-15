@@ -1,22 +1,32 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+// Bootstrap
+import { Card } from "react-bootstrap";
+import Spinner from "react-bootstrap/Spinner";
+import Collapse from "react-bootstrap/Collapse";
+//Helpers
 import { getPosition } from "../../helpers/getPosition";
 import { actionHandler } from "../../helpers/actionHandler";
-import { useDispatch, useSelector } from "react-redux";
-import { Spinner, WeatherCardWrapper } from "./styles";
+import * as Styles from "./styles";
+//
 import { apiKey } from "../../config";
 
 export const WeatherCard = () => {
   const weatherDispatch = useDispatch();
-  const weather = useSelector((state) => state);
+  const { isLoading, weatherData } = useSelector((state) => state);
+  const [open, setOpen] = useState(false);
 
-  const getWeather = async () => {
+  const handleOpen = useCallback(() => {
+    setOpen(true);
+  }, []);
+
+  const handleRequestWeather = useCallback(async () => {
     weatherDispatch({
       type: "WEATHER_TRIGGER_LOADING",
       payload: false,
     });
 
     try {
-      console.log("Start getting data..");
       const position = await getPosition();
       const response = await fetch(
         "http://api.weatherstack.com/current?access_key=" +
@@ -26,29 +36,56 @@ export const WeatherCard = () => {
           "," +
           position.coords.longitude
       );
-
       const rawWeatherData = await response.json();
       weatherDispatch(actionHandler(rawWeatherData));
     } catch (error) {
-      console.log("error", error);
+      console.error("error", error);
     }
-  };
+  }, [weatherDispatch]);
+
+  const handleCardClick = useCallback(() => {
+    handleRequestWeather();
+    handleOpen();
+  }, [handleRequestWeather, handleOpen]);
+
   return (
     <>
-      <h1>Weather</h1>
-      <button onClick={getWeather}>click me</button>
-      <WeatherCardWrapper>
-        {weather.weatherData === null && !weather.isLoading  ? (
-          <p>click to load data </p>
-        ) : weather.isLoading && weather.weatherData === null ? (
-          <Spinner />
-        ) : (
-          <>
-            <p>Time is {weather.weatherData.time}</p>
-            <p>Temp is {weather.weatherData.temperature} deg</p>
-          </>
-        )}
-      </WeatherCardWrapper>
+      <Styles.WeatherCardWrapper>
+        <Card
+          bg="info"
+          border="dark"
+          text="light"
+          style={{ width: "30vw" }}
+          onClick={handleCardClick}
+        >
+          <div style={{ maxWidth: "500px" }}>
+            {weatherData === null ? <p>Click to get weather</p> : null}
+            <Collapse in={open}>
+              {weatherData === null && !isLoading ? (
+                <div> </div>
+              ) : isLoading && weatherData === null ? (
+                <div>
+                  <Spinner animation="border" role="status" />
+                </div>
+              ) : (
+                <div>
+                  <p>Time is {weatherData.time}</p>
+                  <p>Temp is {weatherData.temperature} deg</p>
+                  <p>Humidity is {weatherData.humidity}</p>
+                  <p>
+                    Now it is {weatherData.isDay ? "daytime" : "night"} and
+                    weather is {weatherData.description}
+                  </p>
+                  <p>
+                    Wind goes {weatherData.wind.dir} with power of{" "}
+                    {weatherData.wind.speed}
+                  </p>
+                </div>
+              )}
+            </Collapse>
+          </div>
+        </Card>
+      </Styles.WeatherCardWrapper>
     </>
   );
 };

@@ -1,0 +1,8 @@
+%YAML 1.2
+---
+addReviewers: true
+
+reviewers:
+  - dabiil
+
+numberOfReviewers: 2

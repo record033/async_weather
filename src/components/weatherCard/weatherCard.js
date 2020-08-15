@@ -1,13 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { apiKey } from "../../config";
+//
 import { getPosition } from "../../helpers/getPosition";
 import { actionHandler } from "../../helpers/actionHandler";
-import { useDispatch, useSelector } from "react-redux";
-import { Spinner } from "./styles";
-import { apiKey } from "../../config";
+// Bootstrap
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Card } from "react-bootstrap";
+import Spinner from "react-bootstrap/Spinner";
+import Collapse from "react-bootstrap/Collapse";
+import Button from "react-bootstrap/Button";
 
 export const WeatherCard = () => {
   const weatherDispatch = useDispatch();
   const weather = useSelector((state) => state);
+  const [open, setOpen] = useState(false);
+
+  const triggerCollapse = () => {
+    setOpen(!open);
+  };
 
   const getWeather = async () => {
     weatherDispatch({
@@ -26,7 +37,6 @@ export const WeatherCard = () => {
           "," +
           position.coords.longitude
       );
-
       const rawWeatherData = await response.json();
       weatherDispatch(actionHandler(rawWeatherData));
       console.log("Ready");
@@ -38,24 +48,35 @@ export const WeatherCard = () => {
   return (
     <>
       <h1>Weather</h1>
-      <button onClick={getWeather}>click me</button>
-      <div>
+      <Button
+        variant="info"
+        onClick={() => {
+          getWeather();
+          triggerCollapse();
+        }}
+      >
+        click me
+      </Button>
+      <Card bg="info" border="dark" text="light" style={{ width: "35vw" }}>
         <div style={{ maxWidth: "300px" }}>
-          {weather.weatherData === null && !weather.isLoading ? (
-            <div>click to load data </div>
-          ) : weather.isLoading && weather.weatherData === null ? (
-            <div>
-              <Spinner />
-            </div>
-          ) : (
-            <div>
-              <p>Time is {weather.weatherData.time}</p>
-              <p>Temp is {weather.weatherData.temperature} deg</p>
-              <div src={weather.weatherData.iconSrc} />
-            </div>
-          )}
+          {weather.weatherData === null ? <p>Click to get weather</p> : null}
+          <Collapse in={open}>
+            {weather.weatherData === null && !weather.isLoading ? (
+              <div> </div>
+            ) : weather.isLoading && weather.weatherData === null ? (
+              <div>
+                <Spinner animation="border" role="status" />
+              </div>
+            ) : (
+              <div>
+                <p>Time is {weather.weatherData.time}</p>
+                <p>Temp is {weather.weatherData.temperature} deg</p>
+                <div src={weather.weatherData.iconSrc} />
+              </div>
+            )}
+          </Collapse>
         </div>
-      </div>
+      </Card>
     </>
   );
 };

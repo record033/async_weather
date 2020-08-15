@@ -1,11 +1,12 @@
 export const actionHandler = ({ current }) => {
+  console.log(current);
   return {
     type: "WEATHER_ADD_DATA",
     payload: {
       time: current.observation_time,
       temperature: current.temperature,
       humidity: current.humidity,
-      isDay: "yes" ? true : false,
+      isDay: current.is_day === "yes" ? true : false,
       description: current.weather_descriptions,
       iconSrc: current.weather_icons,
       wind: {
